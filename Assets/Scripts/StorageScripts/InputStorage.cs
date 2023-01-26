@@ -1,23 +1,29 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class InputStorage : Storage
 {
-    private FactoryNeedProduct _factory;
-    private Product[] _needProducts;
-    private bool[] _lockProducts;
+    private FactoryNeedProducts _factory;
     private Product _fixedProduct;
-    private int _previousFixedproduct;
 
     private void Start()
     {
-        _factory = transform.parent.GetComponent<FactoryNeedProduct>();
+        _factory = transform.parent.GetComponent<FactoryNeedProducts>();
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.TryGetComponent(out PlayerStorage playerStorage))
+        {
+            if (_fixedProduct == null)
+            {
+                _fixedProduct = _factory.GetFixedProduct(_fixedProduct, playerStorage);
+                if (_fixedProduct == null)
+                    return;
+            }
             StartCoroutine(InputProducts(playerStorage));
+        }
     }
 
     private void OnTriggerExit(Collider other)
@@ -37,51 +43,19 @@ public class InputStorage : Storage
             AddProductStorage(product);
             yield return new WaitForSeconds(TimeToTransitProduct);
         }
-        
+
     }
 
     private Product CheckNeedProduct(PlayerStorage playerStorage)
     {
-        if (_fixedProduct == null)
+        Product product = playerStorage.GetNeedProduct(_fixedProduct);
+        if (product != null)
+             return product;
+        if (!CheckAvailabilityProductStorage())
         {
-            for (int i = 0; i < _needProducts.Length; i++)
-            {
-                if(!_lockProducts[i] && playerStorage.CheckNeedProductPlayerStorage(_needProducts[i]))
-                {
-                    _previousFixedproduct = i;
-                    _lockProducts[i] = true;
-                    _fixedProduct = _needProducts[i];
-                    return playerStorage.GetNeedProduct(_needProducts[i]);
-                }
-            }
-            return null;
+            _fixedProduct = _factory.GetFixedProduct(_fixedProduct, playerStorage);
+            return playerStorage.GetNeedProduct(_fixedProduct);
         }
-        else
-        {
-            if (playerStorage.CheckNeedProductPlayerStorage(_fixedProduct))
-                return playerStorage.GetNeedProduct(_fixedProduct);
-            if(!CheckAvailabilityProductStorage())
-            {
-                for (int i = 0; i < _needProducts.Length; i++)
-                {
-                    if (!_lockProducts[i] && playerStorage.CheckNeedProductPlayerStorage(_needProducts[i]))
-                    {
-                        _lockProducts[_previousFixedproduct] = false;
-                        _lockProducts[i] = true;
-                        _previousFixedproduct = i;
-                        _fixedProduct = _needProducts[i];
-                        return playerStorage.GetNeedProduct(_needProducts[i]);
-                    }
-                }
-            }
-            return null;
-        }
+        return null;
     }
-
-    public void Init(Product[] needProducts,ref bool[] lockProducts)
-    {
-        _needProducts = needProducts;
-         _lockProducts = lockProducts;
-    }
-
 }
