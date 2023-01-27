@@ -17,4 +17,6 @@ public class FactoryNoNeedProduct : Factory
             yield return new WaitForSeconds(TimeToCreate);
         }
     }
+
+    
 }

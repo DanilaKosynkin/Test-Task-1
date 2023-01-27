@@ -67,6 +67,4 @@ public abstract class Storage : MonoBehaviour
             return true;
         return false;
     }
-
-
 }

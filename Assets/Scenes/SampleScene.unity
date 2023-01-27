@@ -388,6 +388,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 920070248020491801, guid: 70a758a7428506e45822653efc9ee9ba, type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 8757039499065673863}
     - target: {fileID: 3190106234913070856, guid: 70a758a7428506e45822653efc9ee9ba, type: 3}
       propertyPath: m_RootOrder
       value: 8
@@ -440,6 +444,10 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 8a48ed12bedc7ca479f25fa06b831cd3, type: 2}
+    - target: {fileID: 4767942520155929649, guid: 70a758a7428506e45822653efc9ee9ba, type: 3}
+      propertyPath: m_RootOrder
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 6021396551627620533, guid: 70a758a7428506e45822653efc9ee9ba, type: 3}
       propertyPath: TimeToCreate
       value: 1
@@ -583,6 +591,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 920070248020491801, guid: 70a758a7428506e45822653efc9ee9ba, type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 8757039499065673863}
     - target: {fileID: 3190106234913070856, guid: 70a758a7428506e45822653efc9ee9ba, type: 3}
       propertyPath: m_RootOrder
       value: 7
@@ -1118,14 +1130,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8757039499065673861}
-  m_LocalRotation: {x: 0.38268343, y: -0, z: -0, w: 0.92387956}
-  m_LocalPosition: {x: 0, y: 9, z: -9}
+  m_LocalRotation: {x: 0.30070576, y: 0, z: 0, w: 0.953717}
+  m_LocalPosition: {x: 0, y: 6, z: -6}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8757039499112427120}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 45, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 35, y: 0, z: 0}
 --- !u!1 &8757039499065673861
 GameObject:
   m_ObjectHideFlags: 0
@@ -1249,6 +1261,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 40845233, guid: 4f97d2100b005c049a7790938aef35cc, type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 8757039499065673863}
     - target: {fileID: 8409894283076235578, guid: 4f97d2100b005c049a7790938aef35cc, type: 3}
       propertyPath: m_RootOrder
       value: 6

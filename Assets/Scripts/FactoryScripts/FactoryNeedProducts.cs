@@ -16,7 +16,6 @@ public class FactoryNeedProducts : Factory
         {
             _inputStorage[i] = _inputStorage[i].GetComponent<InputStorage>();
         }
-
         StartCoroutine(WaitProductMove());
     }
 
@@ -24,7 +23,7 @@ public class FactoryNeedProducts : Factory
     {
         while (true)
         {
-            yield return new WaitUntil(() => CheckAvailabilityProducts());
+            yield return new WaitUntil(() => CheckAvailabilityProducts() && OutputStorage.CheckFreeSpaceStorage());
             Product[] products = new Product[_needProducts.Length];
             for (int i = 0; i < products.Length; i++)
             {
@@ -41,42 +40,6 @@ public class FactoryNeedProducts : Factory
         }
     }
 
-    public Product GetFixedProduct(Product fixedProduct, PlayerStorage playerStorage)
-    {
-        for (int i = 0; i < _needProducts.Length; i++)
-        {
-            if (!_lockProducts[i] && playerStorage.CheckNeedProductPlayerStorage(_needProducts[i]))
-            {
-                if (fixedProduct != null)
-                {
-                    for (int j = 0; j < _lockProducts.Length; j++)
-                    {
-                        if (_needProducts[j].CompareTag(fixedProduct.tag))
-                        {
-                            _lockProducts[j] = false;
-                            break;
-                        } 
-                    }
-                }
-                _lockProducts[i] = true;
-                return _needProducts[i];
-            }
-        }
-
-        if (fixedProduct != null)
-        {
-            for (int i = 0; i < _lockProducts.Length; i++)
-            {
-                if (_needProducts[i].CompareTag(fixedProduct.tag))
-                {
-                    _lockProducts[i] = false;
-                    break;
-                }
-            }
-        }
-        return null;
-    }
-
     private bool CheckAvailabilityProducts()
     {
         foreach (InputStorage inputStorage in _inputStorage)
@@ -86,4 +49,41 @@ public class FactoryNeedProducts : Factory
         }
         return true;
     }
+    private void CheckFixedProduct(Product fixedProduct)
+    {
+        if (fixedProduct != null)
+            for (int i = 0; i < _lockProducts.Length; i++)
+            {
+                if (_needProducts[i].CompareTag(fixedProduct.tag))
+                {
+                    _lockProducts[i] = false;
+                    return;
+                }
+            }
+    }
+
+    public Product GetFixedProduct(Product fixedProduct, PlayerStorage playerStorage)
+    {
+        for (int i = 0; i < _needProducts.Length; i++)
+        {
+            if (!_lockProducts[i] && playerStorage.CheckNeedProductPlayerStorage(_needProducts[i]))
+            {
+                CheckFixedProduct(fixedProduct);
+                _lockProducts[i] = true;
+                return _needProducts[i];
+            }
+        }
+        CheckFixedProduct(fixedProduct);
+        return null;
+    }
+
+    public string FactoryInputInfoCheck()
+    {
+        if (!OutputStorage.CheckFreeSpaceStorage())
+            return gameObject.name + " - " + "Output Storage Full";
+        if (!CheckAvailabilityProducts())
+            return gameObject.name + " - " + "Input Storage waiting for the right products";
+        return "";
+    }
 }
+

@@ -19,4 +19,11 @@ public abstract class Factory : MonoBehaviour
         spawnProduct.GetComponent<BoxCollider>().enabled = false;
         OutputStorage.AddProductStorage(spawnProduct);
     }
+
+    public string FactoryOutputInfoCheck()
+    {
+        if (!OutputStorage.CheckFreeSpaceStorage())
+            return gameObject.name + " - " + "Output Storage Full";
+        return "";
+    }
 }
